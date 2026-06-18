@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spider-Man · Portal de Acesso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       TELA DE LOGIN
+  ═══════════════════════════════════════════ -->
+  <div id="login-screen" class="screen active">
+
+    <!-- Canvas de partículas e teias -->
+    <canvas id="web-canvas"></canvas>
+
+    <!-- Cidade noturna ao fundo -->
+    <div class="city-bg">
+      <div class="city-skyline"></div>
+      <div class="city-glow"></div>
+      <div class="stars"></div>
+    </div>
+
+    <!-- Homem-Aranha SVG / ilustração -->
+    <div class="spiderman-figure" id="spiderman-hero">
+      <div class="spiderman-wrap">
+        <!-- SVG do personagem -->
+        <svg class="spider-svg" viewBox="0 0 320 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- Teia saindo da mão -->
+          <g class="web-shot" id="web-shot-anim">
+            <path class="web-line" d="M 120 160 Q 60 100 -40 40" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+            <path class="web-line" d="M 120 160 Q 30 80 -80 10" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+          </g>
+
+          <!-- Corpo -->
+          <!-- Pernas -->
+          <g class="spider-legs">
+            <path d="M 160 340 Q 100 390 60 440" stroke="#C41E1E" stroke-width="18" fill="none" stroke-linecap="round"/>
+            <path d="M 160 340 Q 220 390 260 440" stroke="#C41E1E" stroke-width="18" fill="none" stroke-linecap="round"/>
+            <path d="M 155 360 Q 80 420 50 470" stroke="#B01A1A" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <path d="M 165 360 Q 240 420 270 470" stroke="#B01A1A" stroke-width="14" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- Torso -->
+          <ellipse cx="160" cy="290" rx="70" ry="90" fill="#D32020"/>
+          <!-- Teia no torso -->
+          <g stroke="#9A0000" stroke-width="1" fill="none" opacity="0.6">
+            <line x1="160" y1="200" x2="160" y2="380"/>
+            <line x1="90" y1="250" x2="230" y2="250"/>
+            <line x1="95" y1="220" x2="225" y2="220"/>
+            <line x1="95" y1="280" x2="225" y2="280"/>
+            <line x1="100" y1="310" x2="220" y2="310"/>
+            <line x1="108" y1="340" x2="212" y2="340"/>
+            <!-- Linhas diagonais -->
+            <line x1="90" y1="200" x2="160" y2="380"/>
+            <line x1="230" y1="200" x2="160" y2="380"/>
+            <line x1="90" y1="200" x2="230" y2="350"/>
+            <line x1="230" y1="200" x2="90" y2="350"/>
+          </g>
+          <!-- Símbolo da aranha -->
+          <g transform="translate(160, 270)" fill="#1A0000" opacity="0.85">
+            <ellipse cx="0" cy="-15" rx="14" ry="9"/>
+            <ellipse cx="0" cy="5" rx="22" ry="14"/>
+            <!-- Patas da aranha no símbolo -->
+            <line x1="-22" y1="5" x2="-40" y2="-8" stroke="#1A0000" stroke-width="3"/>
+            <line x1="-22" y1="5" x2="-42" y2="5" stroke="#1A0000" stroke-width="3"/>
+            <line x1="-22" y1="5" x2="-38" y2="18" stroke="#1A0000" stroke-width="3"/>
+            <line x1="22" y1="5" x2="40" y2="-8" stroke="#1A0000" stroke-width="3"/>
+            <line x1="22" y1="5" x2="42" y2="5" stroke="#1A0000" stroke-width="3"/>
+            <line x1="22" y1="5" x2="38" y2="18" stroke="#1A0000" stroke-width="3"/>
+          </g>
+
+          <!-- Braços -->
+          <path d="M 90 250 Q 40 200 10 150" stroke="#D32020" stroke-width="22" fill="none" stroke-linecap="round" class="arm-left"/>
+          <path d="M 230 250 Q 280 220 310 260" stroke="#D32020" stroke-width="22" fill="none" stroke-linecap="round" class="arm-right"/>
+          <!-- Mão esquerda aberta / lançando teia -->
+          <circle cx="10" cy="148" r="14" fill="#D32020"/>
+          <circle cx="310" cy="262" r="14" fill="#D32020"/>
+          <!-- Dedos mão esquerda (posição de teia) -->
+          <line x1="10" y1="148" x2="-4" y2="132" stroke="#C41E1E" stroke-width="5" stroke-linecap="round"/>
+          <line x1="10" y1="148" x2="6" y2="130" stroke="#C41E1E" stroke-width="5" stroke-linecap="round"/>
+          <line x1="10" y1="148" x2="24" y2="136" stroke="#C41E1E" stroke-width="5" stroke-linecap="round"/>
+
+          <!-- Pescoço -->
+          <rect x="143" y="176" width="34" height="30" rx="8" fill="#D32020"/>
+
+          <!-- Cabeça -->
+          <ellipse cx="160" cy="155" rx="58" ry="65" fill="#D32020"/>
+          <!-- Olhos brancos do Homem-Aranha -->
+          <ellipse cx="135" cy="145" rx="24" ry="18" fill="white" transform="rotate(-15,135,145)"/>
+          <ellipse cx="185" cy="145" rx="24" ry="18" fill="white" transform="rotate(15,185,145)"/>
+          <!-- Brilho nos olhos -->
+          <ellipse cx="130" cy="138" rx="8" ry="6" fill="#E8E8E8" opacity="0.6" transform="rotate(-15,130,138)"/>
+          <ellipse cx="180" cy="138" rx="8" ry="6" fill="#E8E8E8" opacity="0.6" transform="rotate(15,180,138)"/>
+          <!-- Teia na máscara -->
+          <g stroke="#9A0000" stroke-width="0.8" fill="none" opacity="0.5">
+            <line x1="160" y1="90" x2="160" y2="220"/>
+            <line x1="102" y1="115" x2="218" y2="195"/>
+            <line x1="102" y1="195" x2="218" y2="115"/>
+            <ellipse cx="160" cy="155" rx="20" ry="20"/>
+            <ellipse cx="160" cy="155" rx="40" ry="40"/>
+            <ellipse cx="160" cy="155" rx="58" ry="58"/>
+          </g>
+        </svg>
+
+        <!-- Teia suspensa acima (corda) -->
+        <div class="web-rope"></div>
+      </div>
+    </div>
+
+    <!-- Card de Login -->
+    <div class="login-container">
+      <div class="login-card glass" id="login-card">
+
+        <!-- Cabeçalho -->
+        <div class="card-header">
+          <div class="logo-mark">
+            <svg viewBox="0 0 40 40" width="40" height="40">
+              <circle cx="20" cy="20" r="19" fill="none" stroke="#E31C1C" stroke-width="1.5"/>
+              <ellipse cx="20" cy="14" rx="8" ry="5" fill="#E31C1C"/>
+              <ellipse cx="20" cy="26" rx="13" ry="8" fill="#E31C1C"/>
+              <line x1="7" y1="26" x2="-2" y2="18" stroke="#E31C1C" stroke-width="2"/>
+              <line x1="7" y1="26" x2="-2" y2="26" stroke="#E31C1C" stroke-width="2"/>
+              <line x1="7" y1="26" x2="-1" y2="34" stroke="#E31C1C" stroke-width="2"/>
+              <line x1="33" y1="26" x2="42" y2="18" stroke="#E31C1C" stroke-width="2"/>
+              <line x1="33" y1="26" x2="42" y2="26" stroke="#E31C1C" stroke-width="2"/>
+              <line x1="33" y1="26" x2="41" y2="34" stroke="#E31C1C" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="header-text">
+            <span class="eyebrow">Portal Seguro</span>
+            <h1 class="title">SPIDER<span class="accent">NET</span></h1>
+            <p class="subtitle">Sistema de Acesso — Nova York</p>
+          </div>
+        </div>
+
+        <!-- Formulário -->
+        <form class="login-form" id="login-form" novalidate>
+
+          <!-- Campo usuário -->
+          <div class="field-group" id="field-user">
+            <label class="field-label" for="username">Agente / Usuário</label>
+            <div class="field-wrap">
+              <span class="field-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </span>
+              <input type="text" id="username" name="username" class="field-input"
+                     placeholder="ex: peter.parker" autocomplete="username" spellcheck="false"/>
+              <span class="field-status"></span>
+            </div>
+            <p class="field-error" id="error-user"></p>
+          </div>
+
+          <!-- Campo senha -->
+          <div class="field-group" id="field-pass">
+            <label class="field-label" for="password">Senha de Acesso</label>
+            <div class="field-wrap">
+              <span class="field-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="password" name="password" class="field-input"
+                     placeholder="••••••••" autocomplete="current-password"/>
+              <button type="button" class="toggle-pass" id="toggle-pass" aria-label="Mostrar senha">
+                <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
+            <p class="field-error" id="error-pass"></p>
+          </div>
+
+          <!-- Mini-jogo anti-robô -->
+          <div class="captcha-zone" id="captcha-zone">
+            <div class="captcha-label">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#E31C1C"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="white"/><line x1="12" y1="2" x2="12" y2="6" stroke="white" stroke-width="2"/><line x1="12" y1="18" x2="12" y2="22" stroke="white" stroke-width="2"/></svg>
+              Verificação de Sentido Aranha
+            </div>
+            <div class="captcha-game" id="captcha-game">
+              <canvas id="game-canvas" width="340" height="120"></canvas>
+              <p class="game-hint" id="game-hint">🕸 Arraste a teia do prédio <strong>A</strong> até o prédio <strong>B</strong></p>
+            </div>
+            <div class="captcha-done" id="captcha-done" style="display:none">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#4ADE80" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Verificação concluída!</span>
+            </div>
+          </div>
+
+          <!-- Botão de login -->
+          <button type="submit" class="btn-login" id="btn-login">
+            <span class="btn-text">Entrar na Rede</span>
+            <span class="btn-loader" style="display:none">
+              <svg class="spin" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2">
+                <circle cx="12" cy="12" r="10" stroke-dasharray="31 63" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="btn-web-anim" style="display:none">🕸</span>
+          </button>
+
+          <p class="login-hint">
+            Use <code>spider / 12345</code> para entrar
+          </p>
+
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Efeito Sentido-Aranha (ondas de erro) -->
+    <div class="spider-sense" id="spider-sense">
+      <div class="sense-wave w1"></div>
+      <div class="sense-wave w2"></div>
+      <div class="sense-wave w3"></div>
+      <div class="sense-msg">Sentido Aranha ativado.<br>Credenciais inválidas.</div>
+    </div>
+
+    <!-- Overlay de verificação -->
+    <div class="verify-overlay" id="verify-overlay" style="display:none">
+      <div class="verify-box">
+        <div class="verify-web-anim" id="verify-web">
+          <!-- canvas de teia sendo lançada -->
+          <canvas id="throw-canvas" width="300" height="200"></canvas>
+        </div>
+        <p class="verify-msg" id="verify-msg">Verificando acesso...</p>
+        <div class="verify-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /login-screen -->
+
+
+  <!-- ═══════════════════════════════════════════
+       TELA DE SUCESSO / DASHBOARD
+  ═══════════════════════════════════════════ -->
+  <div id="dashboard-screen" class="screen">
+
+    <canvas id="dash-canvas"></canvas>
+
+    <header class="dash-header">
+      <div class="dash-logo">
+        <svg viewBox="0 0 30 30" width="28" height="28">
+          <ellipse cx="15" cy="10" rx="6" ry="4" fill="#E31C1C"/>
+          <ellipse cx="15" cy="20" rx="10" ry="6" fill="#E31C1C"/>
+          <line x1="5" y1="20" x2="-2" y2="14" stroke="#E31C1C" stroke-width="2"/>
+          <line x1="5" y1="20" x2="-2" y2="20" stroke="#E31C1C" stroke-width="2"/>
+          <line x1="5" y1="20" x2="-1" y2="26" stroke="#E31C1C" stroke-width="2"/>
+          <line x1="25" y1="20" x2="32" y2="14" stroke="#E31C1C" stroke-width="2"/>
+          <line x1="25" y1="20" x2="32" y2="20" stroke="#E31C1C" stroke-width="2"/>
+          <line x1="25" y1="20" x2="31" y2="26" stroke="#E31C1C" stroke-width="2"/>
+        </svg>
+        <span>SpiderNet</span>
+      </div>
+      <nav class="dash-nav">
+        <a href="#" class="nav-link active">Painel</a>
+        <a href="#" class="nav-link">Missões</a>
+        <a href="#" class="nav-link">Aliados</a>
+        <a href="#" class="nav-link">Arquivo</a>
+      </nav>
+      <div class="dash-user">
+        <span class="user-name" id="dash-username">Spider</span>
+        <button class="btn-logout" id="btn-logout">Sair</button>
+      </div>
+    </header>
+
+    <main class="dash-main">
+
+      <section class="dash-welcome">
+        <div class="welcome-text">
+          <p class="welcome-eyebrow">Bem-vindo de volta,</p>
+          <h2 class="welcome-name" id="welcome-name">Peter Parker</h2>
+          <p class="welcome-sub">Seu sentido aranha está em alerta máximo. Todas as ameaças monitoradas.</p>
+        </div>
+        <div class="welcome-spider">
+          <div class="mini-spider">🕷</div>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="stats-grid">
+        <div class="stat-card glass-dark">
+          <div class="stat-icon red">🕸</div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="247">0</span>
+            <span class="stat-label">Teias Lançadas</span>
+          </div>
+        </div>
+        <div class="stat-card glass-dark">
+          <div class="stat-icon blue">🏙</div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="1893">0</span>
+            <span class="stat-label">Km Percorridos</span>
+          </div>
+        </div>
+        <div class="stat-card glass-dark">
+          <div class="stat-icon green">🦸</div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="54">0</span>
+            <span class="stat-label">Missões Completas</span>
+          </div>
+        </div>
+        <div class="stat-card glass-dark">
+          <div class="stat-icon yellow">⚡</div>
+          <div class="stat-info">
+            <span class="stat-value" data-target="99">0</span>
+            <span class="stat-label">Sentido Aranha %</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cards de informação -->
+      <section class="info-grid">
+
+        <div class="info-card glass-dark wide">
+          <div class="info-header">
+            <h3>Ameaças Detectadas</h3>
+            <span class="badge red">3 Ativas</span>
+          </div>
+          <ul class="threat-list">
+            <li class="threat-item">
+              <span class="threat-dot red"></span>
+              <span class="threat-name">Duende Verde — Midtown</span>
+              <span class="threat-level">ALTO</span>
+            </li>
+            <li class="threat-item">
+              <span class="threat-dot yellow"></span>
+              <span class="threat-name">Electro — Times Square</span>
+              <span class="threat-level">MÉDIO</span>
+            </li>
+            <li class="threat-item">
+              <span class="threat-dot blue"></span>
+              <span class="threat-name">Homem-Areia — Brooklyn</span>
+              <span class="threat-level">BAIXO</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="info-card glass-dark">
+          <div class="info-header">
+            <h3>Status do Traje</h3>
+            <span class="badge green">Operacional</span>
+          </div>
+          <div class="suit-stats">
+            <div class="suit-bar-item">
+              <span>Web-Shooters</span>
+              <div class="bar"><div class="bar-fill red" style="width:78%"></div></div>
+              <span>78%</span>
+            </div>
+            <div class="suit-bar-item">
+              <span>Armadura</span>
+              <div class="bar"><div class="bar-fill blue" style="width:92%"></div></div>
+              <span>92%</span>
+            </div>
+            <div class="suit-bar-item">
+              <span>Bateria HUD</span>
+              <div class="bar"><div class="bar-fill green" style="width:61%"></div></div>
+              <span>61%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card glass-dark">
+          <div class="info-header">
+            <h3>Aliados Online</h3>
+          </div>
+          <ul class="ally-list">
+            <li class="ally-item">
+              <span class="ally-avatar">🦅</span>
+              <span class="ally-name">Falcão</span>
+              <span class="ally-status online">Online</span>
+            </li>
+            <li class="ally-item">
+              <span class="ally-avatar">🐱</span>
+              <span class="ally-name">Pantera</span>
+              <span class="ally-status online">Online</span>
+            </li>
+            <li class="ally-item">
+              <span class="ally-avatar">🔴</span>
+              <span class="ally-name">Homem de Ferro</span>
+              <span class="ally-status away">Ausente</span>
+            </li>
+          </ul>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div><!-- /dashboard-screen -->
+
+  <script src="js/index.js"></script>
+</body>
+</html>
